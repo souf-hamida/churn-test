@@ -25,4 +25,7 @@ jobs:
         run: |
           echo "## Metrics" > report.md
           awk 'NR%4{print "    " $0}{print ""}' metrics.txt >> report.md
+
+          echo "## Confusion Matrix" >> report.md
+          echo "![](./conf_matrix.png)" >> report.md
           cml comment create report.md

@@ -1,35 +1,32 @@
-name: churn-imbalanced-dataset
+name: churn-cml
 on: [push]
 permissions: write-all
+
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-      - uses: iterative/setup-cml@v1
+      - uses: iterative/setup-cml@v2
 
-      - name: Prepare Environment
+      - name: Train model & produce metrics
         run: |
-          # Your ML workflow goes here
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           python script.py
+          # sorties attendues : metrics.txt et conf_matrix.png
 
       - name: Generate Report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-
-          # Get the report
           echo "## Metrics" > report.md
-          # cat metrics.txt >> report.md
-
           awk 'NR%4{print "    " $0}{print ""}' metrics.txt >> report.md
 
           echo "## Confusion Matrix" >> report.md

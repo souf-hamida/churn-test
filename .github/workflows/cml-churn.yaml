@@ -10,6 +10,9 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
       - uses: iterative/setup-cml@v2
 
       - name: Train model & produce metrics
@@ -25,4 +28,7 @@ jobs:
         run: |
           echo "## Metrics" > report.md
           awk 'NR%4{print "    " $0}{print ""}' metrics.txt >> report.md
+
+          echo "## Confusion Matrix" >> report.md
+          echo "![](./conf_matrix.png)" >> report.md
           cml comment create report.md

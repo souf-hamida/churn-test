@@ -10,6 +10,9 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
       - uses: iterative/setup-cml@v2
 
       - name: Train model & produce metrics
